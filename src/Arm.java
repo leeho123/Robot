@@ -224,6 +224,7 @@ public class Arm {
 	}
 	
 	public void connect(){
+		
 		NXTConnection conn = Bluetooth.waitForConnection();
 		conn.setIOMode(NXTConnection.RAW);
 		System.out.println("Connected");
@@ -262,7 +263,7 @@ public class Arm {
 	}
 	
 	public static void main(String[] args){
-		Arm arm = new Arm();
+		UnsyncedArm arm = new UnsyncedArm();
 		arm.connect();	
 	}
 }
