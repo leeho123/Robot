@@ -23,13 +23,15 @@ public class UnsyncedArm {
 	final static String SLAVEL_NAME = "SLAVEL";
 	//FB
 	//RL
-	final static int[] SLAVE_RL_ARGS = {123, 3, -123, -7, 123, 2, -125, -2};
-	final static int[] SLAVE_FB_ARGS = {122, 0, -122, -3, 123, 3, -121, 0};
+	final static int[] SLAVE_RL_ARGS = {123, 3, -123, -7, 
+										123, 2, -125, -4};
+	final static int[] SLAVE_FB_ARGS = {122, -1, -122, -3, 
+										123, 3, -121, 0};
 	
 	//RLFB
-	final static int[] CLAMP_POWS = {700, 650, 700, 700};
+	final static int[] CLAMP_POWS = {700, 650, 700, 650};
 	
-	final static int[] CLAMP_DEGS = {-106, -106, -106, -106};
+	final static int[] CLAMP_DEGS = {-110, -105, -110, -105 };
 	
 	final static int[] ONEEIGHTYARGS = {};
 	
@@ -76,18 +78,18 @@ public class UnsyncedArm {
 	int[] CLAMP_DEG_ARGS = getClampDeg(NAME);
 	
 	public static int[] getClampDeg(String name){
-		if(name.equals(SLAVEB_NAME)){
+		if(name.equals(SLAVEF_NAME)){
 			return new int[]{CLAMP_DEGS[2], CLAMP_DEGS[3]};
-		}else if(name.equals(SLAVEL_NAME)){
+		}else if(name.equals(SLAVER_NAME)){
 			return new int[]{CLAMP_DEGS[0], CLAMP_DEGS[1]};
 		}
 		return null;
 	}
 	
 	public static int[] getClampPow(String name){
-		if(name.equals(SLAVEB_NAME)){
+		if(name.equals(SLAVEF_NAME)){
 			return new int[]{CLAMP_POWS[2], CLAMP_POWS[3]};
-		}else if(name.equals(SLAVEL_NAME)){
+		}else if(name.equals(SLAVER_NAME)){
 			return new int[]{CLAMP_POWS[0], CLAMP_POWS[1]};
 		}
 		
