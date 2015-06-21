@@ -23,15 +23,15 @@ public class UnsyncedArm {
 	final static String SLAVEL_NAME = "SLAVEL";
 	//FB
 	//RL
-	final static int[] SLAVE_RL_ARGS = {123, 3, -123, -7, 
-										123, 2, -125, -4};
-	final static int[] SLAVE_FB_ARGS = {122, -1, -122, -3, 
-										123, 3, -121, 0};
+	final static int[] SLAVE_RL_ARGS = {126, 3, -125, -4, 
+										130, 2, -126, 0};
+	final static int[] SLAVE_FB_ARGS = {122, 0, -122, -3, 
+										126, 2, -125, -4};
 	
 	//RLFB
-	final static int[] CLAMP_POWS = {700, 650, 700, 650};
+	final static int[] CLAMP_POWS = {800, 600, 800, 600};
 	
-	final static int[] CLAMP_DEGS = {-110, -105, -110, -105 };
+	final static int[] CLAMP_DEGS = {-110, -99, -110, -98};
 	
 	final static int[] ONEEIGHTYARGS = {};
 	
@@ -58,6 +58,10 @@ public class UnsyncedArm {
 	public static final int CLOCK180TWO = 13;
 	public static final int ANTI180ONE = 14;
 	public static final int ANTI180TWO = 15;
+	
+	public static final int HALFUNCLAMPONE = 16;
+	public static final int HALFUNCLAMPTWO = 17;
+	public static final int HALFUNCLAMPBOTH = 18;
 	
 	public static final int DONE = -999;
 	public static final int END_SEQUENCE = -777;
@@ -118,11 +122,15 @@ public class UnsyncedArm {
 			switch(message){
 				case CLAMPONE: clamp(0); break;
 				case CLAMPTWO: clamp(1); break;
-				case UNCLAMPONE: unclamp(motors[0]); break;
-				case UNCLAMPTWO: unclamp(motors[1]); break;
+				case UNCLAMPONE: halfUnclamp(motors[0]); break;
+				case UNCLAMPTWO: halfUnclamp(motors[1]); break;
 				case CLAMPBOTH: clampBoth(); break;
-				case UNCLAMPBOTH: unclampBoth(); break;
+				case UNCLAMPBOTH: halfUnclampBoth(); break;
 				case END_SEQUENCE: reset(); break;
+				case HALFUNCLAMPBOTH: halfUnclampBoth(); break;
+				case HALFUNCLAMPONE: halfUnclamp(motors[0]); break;
+				case HALFUNCLAMPTWO: halfUnclamp(motors[1]); break;
+				
 				default: break;
 			}
 		}else if (job == ROT){
@@ -145,6 +153,18 @@ public class UnsyncedArm {
 		}
 	}
 	
+	public void halfUnclamp(NXTRegulatedMotor motor){
+		motor.rotateTo(-50);
+		motor.waitComplete();
+	}
+	
+	public void halfUnclampBoth(){
+		Motor.A.rotateTo(-50, true);
+		Motor.B.rotateTo(-50, true);
+		Motor.A.waitComplete();
+		Motor.B.waitComplete();
+	
+	}
 	public void reset(){
 		motors[0].setSpeed(300);
 		motors[1].setSpeed(300);
@@ -223,6 +243,7 @@ public class UnsyncedArm {
 		Motor.B.rotateTo(0, true);
 		Motor.A.waitComplete();
 		Motor.B.waitComplete();
+		
 	}
 	
 	public void clampBoth(){
@@ -230,16 +251,20 @@ public class UnsyncedArm {
 		Motor.B.rotateTo(CLAMP_DEG_ARGS[1], true);
 		Motor.A.waitComplete();
 		Motor.B.waitComplete();
+		Motor.A.lock(100);
+		Motor.B.lock(100);
 	}
 	
 	public void unclamp(NXTRegulatedMotor motor){
 		motor.rotateTo(0);
 		motor.waitComplete();
+		
 	}
 	
 	public void clamp(int motor){
 		motors[motor].rotateTo(CLAMP_DEG_ARGS[motor]);
 		motors[motor].waitComplete();
+		motors[motor].lock(100);
 	}
 	
 	
@@ -253,8 +278,8 @@ public class UnsyncedArm {
 			
 			System.out.println("Job is clamp");
 		}else if(job == ROT){
-			Motor.A.setSpeed(900);
-			Motor.B.setSpeed(900);
+			Motor.A.setSpeed(2000);
+			Motor.B.setSpeed(2000);
 
 			Motor.A.resetTachoCount();
 			Motor.B.resetTachoCount();
